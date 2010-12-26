@@ -1,0 +1,59 @@
+Bash-Shell-Tutorial
+Cai Yuanqing
+ckjacket@gmail.com
+
+%!encoding: utf-8
+
+%%% Some post processing filter magic (search & replace)
+
+% Adds an ID to the <body> tag
+% Note: the (?i) makes the pattern case insensitive (avoids headaches)
+%!postproc: '(?i)(<body)'   '\1 id="home"'
+
+% Adds the RSS feed header to the page, right after <head> tag
+%!postproc: '(?i)(<head>)'  \1\n<link rel="alternate" href="http://txt2tags.wordpress.com" type="application/rss+xml">
+
+% Adds class name to the splash image
+%!postproc: '(download-v\d+.png")'  '\1 class="splashimg"'
+
+% Fills the "PHP" tooltip on "About this site". See config.t2t for details.
+%!postproc: {tooltip1}  One exception: Txt2tags Online is a PHP file, because it needs to be interactive.
+
+% meta: keywords
+%!postproc: (</HEAD>)   <meta name="keywords" content="txt2tags, convert, conversion, online, text, HTML, XHTML, SGML, LaTeX, Lout, Man page, Wikipedia, Google Code Wiki, DokuWiki, MoinMoin, MagicPoint, PageMaker, Python, free, tool, markup, Linux, Mac, Windows, GPL">\n\1
+
+% meta: description
+%!postproc: (</HEAD>)   <meta name="description" content="txt2tags - Convert plain text to HTML, XHTML, SGML, LaTeX, DocBook, Lout, Man page, Creole, Wikipedia, Google Code Wiki, DokuWiki, PmWiki, MoinMoin, MagicPoint, PageMaker, AsciiDoc and ASCII Art!">\n\1
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%% All the config is made, so the real contents begins now
+
+% The sidebar with the menu links are on a separated file, included now
+
+                   = 3. 第一个脚本 =
+
+作为我们的第一个脚本，我们仅仅让它能够打印"Hello World"。接着我将在Hello World之外带给你在其他教程中从未有过的体验。
+创建first.sh如下：
+========================================================
+__first.sh__
+
+```
+#!/bin/sh
+# This is a comment!
+echo Hello World    # This is also a comment!
+```
+========================================================
+第一行表示这个文件将被/bin/sh所执行。这是几乎每个Unix系统上标准的Bash所在位置。如果你使用的是GNU Linux发行版，/bin/sh则是Bash的一个符号链接。
+
+
+
+% Tip for the source readers:
+% Change the .html by .t2t on the page address to read the sources
+
+% The footer is an external file
+
+%!include: footer.t2t
+
