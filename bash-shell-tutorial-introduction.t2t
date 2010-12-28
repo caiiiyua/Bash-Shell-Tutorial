@@ -2,7 +2,9 @@ Bash-Shell-Tutorial
 Cai Yuanqing
 ckjacket@gmail.com
 
-%!encoding: utf-8
+%%!encoding: utf-8
+
+%!includeconf: config.t2t
 
 %%% Some post processing filter magic (search & replace)
 
