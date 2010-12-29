@@ -63,4 +63,3 @@ Bourne Shell,由Steve Bourne编写并在贝尔实验室研究发表的Unix第七
 % The footer is an external file
 
 %!include: footer.t2t
-

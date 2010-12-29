@@ -1,0 +1,59 @@
+Bash-Shell-Tutorial
+--- Chinese Edition
+Cai Yuanqing <ckjacket@gmail.com>
+
+%!includeconf: config.t2t
+%!postproc: '(?i)(</title>)'    ' <this-file-name>\1'
+%!postproc: '(?i)(<body)'   '\1 id="<this-file-name>"'
+%%!include: menu.t2t
+
+%%% Some post processing filter magic (search & replace)
+
+% meta: keywords
+%!postproc: (</HEAD>)   <meta name="keywords" content="txt2tags, convert, conversion, online, text, HTML, XHTML, SGML, LaTeX, Lout, Man page, Wikipedia, Google Code Wiki, DokuWiki, MoinMoin, MagicPoint, PageMaker, Python, free, tool, markup, Linux, Mac, Windows, GPL">\n\1
+
+% meta: description
+%!postproc: (</HEAD>)   <meta name="description" content="txt2tags - Convert plain text to HTML, XHTML, SGML, LaTeX, DocBook, Lout, Man page, Creole, Wikipedia, Google Code Wiki, DokuWiki, PmWiki, MoinMoin, MagicPoint, PageMaker, AsciiDoc and ASCII Art!">\n\1
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Start
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+== Bash Shell Tutorial ==
+
+**Contents**
+    + [ Introduction bash-shell-tutorial-introduction.html]
+    + [ Philosophy bash-shell-tutorial-philosophy.html]
+    + [ A First Script bash-shell-tutorial-first-script.html]
+    + [ Variables - Part I  bash-shell-tutorial-variables1.html]
+        - [ Scope of Variables  bash-shell-tutorial-scope.html]
+    + [ Wildcards bash-shell-tutorial-wildcards.html]
+    + [ Escape Characters bash-shell-tutorial-escape-characters.html]
+    + [ Loops bash-shell-tutorial-loops.html]
+        - [ For Loops bash-shell-tutorial-loops-for.html]
+        - [ While Loops bash-shell-tutorial-loops-while.html]
+    + [ Test bash-shell-tutorial-test.html]
+    + [ Case bash-shell-tutorial-case.html]
+    + [ Variables - Part II bash-shell-tutorial-variables2.html]
+        - [ Pre-set Variables bash-shell-tutorial-preset.html]
+    + [ Variables - Part III bash-shell-tutorial-variables3.html]
+        - [ Default Values Variables bash-shell-tutorial-default-values.html]
+    + [ External Programs bash-shell-tutorial-ex-programs.html]
+    + [ Functions bash-shell-tutorial-functions.html]
+        - [ Scope of Variables bash-shell-tutorial-functions-scope.html]
+        - [ Recursion bash-shell-tutorial-functions-recursion.html]
+        - [ Exit Codes bash-shell-tutorial-functions-exit-codes.html]
+    + [ Hints And Tips bash-shell-tutorial-hints-tips.html]
+        - [ Cheating with Awk bash-shell-tutorial-awk.html]
+        - [ Cheating with Sed bash-shell-tutorial-sed.html]
+        - [ Telnet Hint bash-shell-tutorial-telnet.html]
+    + [ Quick Reference bash-shell-tutorial-quickref.html]
+    + [ Interactive Shell bash-shell-tutorial-interactive-shell.html]
+    + [ Exercises bash-shell-tutorial-exercises.html]
+        - [ Addressbook bash-shell-tutorial-addressbook.html]
+        - [ Directory Traversal bash-shell-tutorial-dic-traversal.html]
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% End
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%!include: footer.t2t

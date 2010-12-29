@@ -57,4 +57,3 @@ echo Hello World    # This is also a comment!
 % The footer is an external file
 
 %!include: footer.t2t
-
