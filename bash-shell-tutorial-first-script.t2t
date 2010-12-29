@@ -49,11 +49,86 @@ echo Hello World    # This is also a comment!
 ========================================================
 第一行表示这个文件将被/bin/sh所执行。这是几乎每个Unix系统上标准的Bash所在位置。如果你使用的是GNU Linux发行版，/bin/sh则是Bash的一个符号链接。
 
+第二行由特殊字符#开始。它标记此行为注释行，可以整个被shell乎略。
+
+一个例外是在shell最开始的时候，我们总是由"#!"开始。Unix会特殊对待这一行。即使你使用的csh,ksh或者其他任何交互式shell,那一行都需要被Bourne Shell解析。
+
+相似的，一个Perl脚本可能由"#/usr/bin/perl"开始，这表示要告诉shell这个脚本需要用perl来执行。对于Bourne Shell编程来说，我们可以一直使用"#!/bin/sh"。
 
 
-% Tip for the source readers:
-% Change the .html by .t2t on the page address to read the sources
+第三行运行了一个命令：echo,带两个参数 - 一个是"Hello";另一个是"World"。
+需要注意的是echo会自动的在两个参数之间加入一个空格。
+"#"仍然是表示后面是一行注释，它后面的任何内容都将被乎略。
+
+现在我们给脚本增加运行权限来使得它可以被执行，然后运行./first.sh.
+你可以在屏幕上看到如下信息：
+```
+$ chmod +x first.sh 
+$ ./first.sh 
+Hello World
+
+```
+
+你也可以直接执行以下命令来达到同样的目的:
+```
+$ echo Hello World
+Hello World
+```
+现在让我们做一点小改动。
+首先，我们注意到echo会在参数之间自动加入一个空格。那么如果我们在"Hello"和"World"之间加入许多个空格，会输出什么呢？加入TAB呢？
+在学习Shell编程时，一定要自己尝试看看哦:-D
+
+```
+$ echo Hello        World
+Hello World
+$ echo Hello     World
+Hello World
+$ echo Hello             World
+Hello World
+```
+很奇怪吗！结果都是一样的！ 我们调用echo并带着两个参数，它一点也不像cp会在意参数之间有多少空缺。
+现在再对我们的代码做点修改：
+```
+#!/bin/sh
+#This is my first script
+echo "Hello      World" #This is still a comment
+```
+并且运行它：
+```
+$ ./first.sh 
+Hello      World
+```
+这次起作用了。如果你有其他方面的编程经验，也许你也早就预料到应该会是这个结果。但是理解更加复杂的脚本或者命令时，我们必须能解释：
+
+为什么会这样？
+
+事实上echo在echo "Hello    World"时仅仅有一个参数 - 字符串"Hello    World"。它会很准确的将这个字符串打印出来。
+
+理解这个过程的重点在于：
+
+shell会先解析传入的参数，然后在将参数传入执行的程序中。在我们的例子中，首先是"Hello    World"被完整的解析成一个字符串，然后再将这个字符串作为一个参数传给echo,所以echo会完整的打印出这个参数。
+
+最后一个例子，输入以下脚本，试试先猜猜它们的输出，然后运行。
+========================================================
+__first2.sh__
+
+```
+#!/bin/sh
+#This is my first script
+echo "Hello      World" 
+echo "Hello World"
+echo "Hello * World"
+echo Hello * World
+echo Hello       World
+echo "Hello" World
+echo Hello "    " World
+echo "Hello \"*\" World"
+echo `Hello` World
+echo 'Helo' World
+```
+========================================================
+
+是否每条语句的输出都和你想像的一样呢？如果不是也不要担心哦！这正是我们的教程后面会介绍到的知识，在后面的章节，我们会学习到比echo更给力的命令，但是一定要记得亲手实践和练习。
 
 % The footer is an external file
-
 %!include: footer.t2t
