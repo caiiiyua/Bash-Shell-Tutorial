@@ -38,7 +38,7 @@
 %!postproc: '(?i)(src="[^"]*donate.png".*?) ALT=""'   '\1 alt="DONATE"'
 
 % Trick to add an automatic link to the page top title
-%!postproc: '^<H1>txt2tags</H1>$'   '<h1><a href="/">txt2tags</a></h1>'
+%!postproc: '^<H1>WIKINAME</H1>$'   '<h1><a href="/">Bash Shell 中文版简明教程</a></h1>'
 
 % Real nice trick to transform a link into a SPAN with TITLE.
 % Used when you want a tooltip to appear when the mouse hovers some words.
