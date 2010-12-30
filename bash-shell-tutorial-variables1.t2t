@@ -1,0 +1,95 @@
+Bash-Shell-Tutorial
+<TITLE>
+Cai Yuanqing <ckjacket@gmail.com>
+
+%!includeconf: config.t2t
+%!postproc: '(?i)(</title>)'    ' <this-file-name>\1'
+%!postproc: '(?i)(<body)'   '\1 id="<this-file-name>"'
+%%!include: menu.t2t
+
+%%% Some post processing filter magic (search & replace)
+
+% meta: keywords
+%!postproc: (</HEAD>)   <meta name="keywords" content="txt2tags, convert, conversion, online, text, HTML, XHTML, SGML, LaTeX, Lout, Man page, Wikipedia, Google Code Wiki, DokuWiki, MoinMoin, MagicPoint, PageMaker, Python, free, tool, markup, Linux, Mac, Windows, GPL">\n\1
+
+% meta: description
+%!postproc: (</HEAD>)   <meta name="description" content="txt2tags - Convert plain text to HTML, XHTML, SGML, LaTeX, DocBook, Lout, Man page, Creole, Wikipedia, Google Code Wiki, DokuWiki, PmWiki, MoinMoin, MagicPoint, PageMaker, AsciiDoc and ASCII Art!">\n\1
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Start
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+                    = 4. 变量:第一部分  =
+
+每个程序语言都有一个概念叫：变量，它是一个符号，用来表示一块可以被赋值，读取和运算的内存。Bourne Shell也没有例外，在这一节中我们就来介绍shell中的变量。在后续的章节__[ <变量：第二部分> bash-shell-tutorial-variables2.html]__中，我们还将介绍环境变量。
+
+下面让我们回头看看我们的第一个Hello World的例子。我们可以在里面使用变量（尽管它非常简单，没太大的必要使用变量）
+
+注意“=” 等号两边一定不能有空格：VAR=value是正确的;而VAR = value则是错误的赋值。
+
+在第一个等式中，shell会把“=”等号看作变量赋值操作。
+在第二个等式中，shell会认为VAR是一个命令，并且会尝试执行它。进一步思考，实际上就是执行VAR，并且使得它的第一个参数是"=",第二个参数是"value",那它会有什么结果呢？
+
+在var1.sh中输入如下代码:
+========================================================
+__var1.sh__
+```
+#!/bin/sh
+
+#assgin the variable MY_VAR as "Hello World"
+MY_VAR="Hello World"
+echo $MY_VAR
+```
+========================================================
+这个脚本中将字符串"Hello World"赋值给变量MY_VAR，然后将变量的值通过echo打印出来。
+
+需要注意的是赋值时，我们要用双引号""来括住字符串Hello World,否则将无法完成赋值，不像echo可以接收好几个参数，一个变量只能储存一个值，因此我们必须用把含有空格的字符串放进双引号中，以便让shell把它看作一个变量，否则shell会试图在给变量VAR赋值后，执行World命令。这可不是我们想要的结果，^_^。
+
+Shell不关心变量的类型，它可以储存字符串，整型变量，数字等任何你想要存储的类型。
+使用过Perl的人可能会很习惯这种情况，但如果你是用惯了C,Pascal或者更糟你用的是Ada,这种变量存储方式可能会让你觉得很奇怪。
+
+实际上，所有的变量都以字符串的形式存储，但是如果一个命令需要一个变量是个数字，那它就会将变量看作数字。
+
+例如如果你将一个字符串赋值给变量，然后试图让变量+1,那么你可能会得到以下错误：
+```
+$ x="hello"
+$ y=`expr $x + 1`
+expr: non-numeric argument
+
+```
+因为外部程序//expr//只会处理数字，所以它会将"hello"当数字处理，这样就会出错了。
+以下赋值语句没有语法上的区别：
+```
+MY_MESSAGE="Hello World"
+MY_SHORT_MESSAGE=hi
+MY_NUM=1
+MY_PI=3.142
+MY_OTHER_PI="3.142"
+MY_MIXED=123abc
+
+```
+这里要注意的是特殊字符一定要使用转义字符来避免被shell解析，这部分将在后续章节__[ <Escape Charaters> bash-shell-tutorial-escape-charaters.html]__中讨论。
+
+我们可以通过read命令给变量赋值,这样会使得脚本有互动性;下面的脚本会像你询问姓名然后向你问好：
+========================================================
+__var2.sh__
+```
+#!/bin/sh
+
+echo What is your name ?
+read MY_NAME
+echo "Hello $MY_NAME, How are you !"
+
+```
+========================================================
+这个脚本使用了shell的内建命令//read//,它会从标准输入//stdin//中读取数据，赋值给变量。
+尽管我们输入的是含有空格的全名，并且没有使用双引号，但是仍然能得到正确的输出，这是怎么回事呢？这于我们之前学到的给变量赋值的知识是否相矛盾呢？
+
+事实上，//read//会自动为标准输入中获取到的字符串加上双引号，所以尽管有空格，但是这些字符串仍然能被正确的处理。
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% End
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%!include: footer.t2t
