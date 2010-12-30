@@ -1,0 +1,17 @@
+Embedded-Linux-Team
+
+Cai Yuanqing
+
+
+%!includeconf: config.t2t
+%!postproc: '(?i)(</title>)'    ' <this-file-name>\1'
+%!postproc: '(?i)(<body)'   '\1 id="<this-file-name>"'
+%!include: menu.t2t
+
+% start body
+<Body>
+% end body
+% make two blank lines, don't remove them
+
+
+%!include: footer.t2t

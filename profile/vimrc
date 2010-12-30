@@ -1,0 +1,70 @@
+runtime! debian.vim
+
+"""""""""""""
+"Text format
+"""""""""""""
+set expandtab "replace TAB by SPACE
+set tabstop=4 "TAB length 4 spaces
+set shiftwidth=4 
+
+highlight WhitespaceEOL ctermbg=red guibg=red
+match WhitespaceEOL /\s\+$/
+
+syntax on
+
+"""""""""""""""""""""""""""""""""""""""""""""
+" txt2tags 
+"""""""""""""""""""""""""""""""""""""""""""""
+" set for template
+function! LoadTemplate()
+    silent! 0r ~/.vim/skel/tmpl.%:e
+    " highlight %VAR% placeholders with the Todo colour group
+    syn match Todo "%\u\+%" containedIn=ALL
+endfunction
+autocmd! BufNewFile * call LoadTemplate()
+
+"au BufNewFile,BufRead *.t2t setf txt2tags
+au BufNewFile,BufRead *.t2t     setf txt2tags
+
+"""""""""""""""""""""""""""""""""""""""""""""
+" General Setting
+"""""""""""""""""""""""""""""""""""""""""""""
+"file encode
+set encoding=utf-8
+set fileencodings=utf8,cp950
+
+"profiles
+" The following are commented out as they cause vim to behave a lot
+" differently from regular Vi. They are highly recommended though.
+set ruler   "show status on the bottom
+set showcmd		" Show (partial) command in status line.
+set showmatch		" Show matching brackets.
+set ignorecase		" Do case insensitive matching
+set smartcase
+set incsearch		" Incremental search
+set hlsearch		" Highlights search
+set history=100	"save last 100 commands
+set laststatus=2    " Always display the status line, even if only one window is displayed
+
+"set mouse=a		" Enable mouse usage (all modes)
+"set cursorline  "show current position
+"set smartcase		" Do smart case matching
+"set autowrite		" Automatically save before commands like :next and :make
+"set hidden             " Hide buffers when they are abandoned
+
+"""""""""""""""""""""""""""""""""""""""""""""""
+" Tag list Setting
+""""""""""""""""""""""""""""""""""""""""""""""
+"let Tlist_Ctags_Cmd = '/usr/bin/ctags-exuberant'
+"let Tlist_Show_One_File = 1 "show ctags only current file
+let Tlist_Exit_OnlyWindow = 1   "exit when the only window
+let Tlist_Use_Right_Window = 1  "show taglist on the right
+"let Tlist_Auto_Open = 1 "show taglist when start
+"let Tlist_Close_On_Select = 1 "close taglist when selected the tag
+let Tlist_File_Foid_Auto_Close = 1  "show current file taglist only while multifile opened
+let Tlist_Process_File_Always = 1   "parse tags whenever taglist opened or not
+
+""""""""""""""""""""""""""""""""""""""""""""""
+" Commands Map
+""""""""""""""""""""""""""""""""""""""""""""""
+map <silent> <F9> :TlistToggle<cr>
