@@ -1,0 +1,154 @@
+Bash-Shell-Tutorial
+<TITLE>
+Cai Yuanqing <ckjacket@gmail.com>
+
+%!includeconf: config.t2t
+%!postproc: '(?i)(</title>)'    ' Variables-Scope \1'
+%!postproc: '(?i)(<body)'   '\1 id="variables-scope"'
+%%!include: menu.t2t
+
+%%% Some post processing filter magic (search & replace)
+
+% meta: keywords
+%!postproc: (</HEAD>)   <meta name="keywords" content="txt2tags, convert, conversion, online, text, HTML, XHTML, SGML, LaTeX, Lout, Man page, Wikipedia, Google Code Wiki, DokuWiki, MoinMoin, MagicPoint, PageMaker, Python, free, tool, markup, Linux, Mac, Windows, GPL">\n\1
+
+% meta: description
+%!postproc: (</HEAD>)   <meta name="description" content="txt2tags - Convert plain text to HTML, XHTML, SGML, LaTeX, DocBook, Lout, Man page, Creole, Wikipedia, Google Code Wiki, DokuWiki, PmWiki, MoinMoin, MagicPoint, PageMaker, AsciiDoc and ASCII Art!">\n\1
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Start
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+            = 变量作用域 =
+
+在Bourne Shell中，变量不需要像在C中一定要先声明。但是如果你试图读取一个没有声明过得变量，读到的会是空字符串。这可能会造成难以发现的问题，因为读取未声明的变量并不会有任何的错误或警告。例如你给一个变量赋值 //MY_CORRECT_VAR=hello//,然后//echo $MY_CORECT_VAR//,由于拼写错误，想要输出的是个未声明变量，因此什么输出也没有。
+
+这里有一个命令//export//用于设置变量的作用域。为了明确的知道你所声明的变量如何被使用，接下来我们必须先明白如何使用//export//.
+
+创建一个简单的脚本，//myvar2.sh//:
+====================================================
+__myvar2.sh__
+
+```
+#!/bin/sh
+
+echo "MYVAR is: $MYVAR"
+MYVAR="hi there"
+echo "MYVAR now is: $MY_NAME!"
+```
+====================================================
+
+然后运行它：
+
+```
+$ ./myvar2.sh
+MYVAR is:
+MYVAR now is: hi there!
+
+```
+MYVAR最初并没有被声明和赋值，所以第一次输出时，它是空的。然后我们给它赋值，便可以输出想要的结果了。
+
+那如果我们先在shell中给他赋值，再输出能得到我们想要的结果吗？
+
+```
+$ MYVAR=hello
+$ ./myvar2.sh
+MYVAR is:
+MYVAR now is: hi there!
+
+```
+看来仍然没有起作用！那发生了什么呢？
+
+当你从当前的shell中执行//./myvar2.sh//时，事实上是在一个新的shell进程中运行的，这就是我们最初讨论到的关于//#!/bin/sh//的意义。
+我们对MYVAR的赋值是在当前shell中执行的，因此在新的shell中这个变量并没有被继承下去，//exprot//的作用便是让一个变量可以从当前shell继承到派生出的进程中。
+
+例如：
+
+```
+export MYVAR=hello
+$ ./myvar2.sh
+MYVAR is: hello
+MYVAR now is: hi there!
+
+```
+现在可以看到MYVAR的赋值起作用了。从上面我们看到在//myvar2.sh//中我们对MYVAR的值进行了修改，但是它无法将修改的值传回给当前shell来修改MYVAR的值:
+
+```
+$ echo $MYVAR
+hello
+```
+一旦shell脚本退出，那么它的变量，资源都将被释放，所以在当前shell中，MYVAR仍然保持它原本的值//hello//.
+
+为了能让脚本中的修改也能影响当前的shell，我们必须//source//这个脚本，它的实际效果是将脚本在当前shell中执行，而不是新建一个进程。
+
+我们可以通过"."命令来//source//一个脚本：
+
+```
+MYVAR=hello
+$ echo $MYVAR
+hello
+$ . myvar2.sh
+MYVAR is: hello
+MYVAR now is: hi there!
+$ echo $MYVAR
+hi there
+
+```
+这样就实现了对当前shell中变量的修改，这也正是我们系统中的//.profile//或者//.bash_profile//等环境变量脚本工作的方式。
+另外，这种情况下，可以直接对变量赋值，不需要在//export//.
+
+==================================================
+```
+#!/bin/sh
+
+echo "What's your name?"
+read URNAME
+echo "Hello $URNAME"
+echo "I will create your profile: $URNAME_file"
+touch $URNAME_file
+```
+==================================================
+考虑下上面这个脚本，例如你输入名字"nehe"到//URNAME//中，那么最终会有一个叫做nehe_file的文件被创建吗？
+
+```
+$ ./nehe_file.sh
+What's your name?
+nehe
+Hello nehe
+I will create your profile:
+touch: missing file operand
+Try `touch --help' for more information.
+```
+看来不是这样。这是因为shell不知道你的变量在哪里结束，除非你有一个叫做//URNAME_file//的变量，那我们怎么来定义一个已知变量和字符串的结合呢？
+
+答案是将变量用花括号括起来:-D
+==================================================
+__nehe_file.sh__
+```
+#!/bin/sh
+
+echo "What's your name?"
+read URNAME
+echo "Hello $URNAME"
+echo "I will create your profile: ${URNAME}_file"
+touch ${URNAME}_file
+```
+```
+$ ./nehe_file.sh
+What's your name?
+nehe
+Hello nehe
+I will create your profile: nehe_file
+```
+==================================================
+
+现在shell就可以知道变量名是**URNAME**,后面会接上一个字符串//_file//.
+新手更应该在这个地方多加谨慎，因为这种错误可能很隐蔽，也很难去跟踪排错。
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% End
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%!include: footer.t2t

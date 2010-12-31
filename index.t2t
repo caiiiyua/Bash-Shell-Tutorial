@@ -25,7 +25,7 @@ Cai Yuanqing <ckjacket@gmail.com>
     + [ Philosophy bash-shell-tutorial-philosophy.html]
     + [ A First Script bash-shell-tutorial-first-script.html]
     + [ Variables - Part I  bash-shell-tutorial-variables1.html]
-        - [ Scope of Variables  bash-shell-tutorial-scope.html]
+        - [ Scope of Variables  bash-shell-tutorial-variables-scope.html]
     + [ Wildcards bash-shell-tutorial-wildcards.html]
     + [ Escape Characters bash-shell-tutorial-escape-characters.html]
     + [ Loops bash-shell-tutorial-loops.html]
