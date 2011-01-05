@@ -1,0 +1,89 @@
+WIKINAME
+<TITLE>
+Cai Yuanqing <ckjacket@gmail.com>
+
+%!includeconf: config.t2t
+%!postproc: '(?i)(</title>)'    ' <this-file-name>\1'
+%!postproc: '(?i)(<body)'   '\1 id="<this-file-name>"'
+%%!include: menu.t2t
+
+%%% Some post processing filter magic (search & replace)
+
+% meta: keywords
+%!postproc: (</HEAD>)   <meta name="keywords" content="txt2tags, convert, conversion, online, text, HTML, XHTML, SGML, LaTeX, Lout, Man page, Wikipedia, Google Code Wiki, DokuWiki, MoinMoin, MagicPoint, PageMaker, Python, free, tool, markup, Linux, Mac, Windows, GPL">\n\1
+
+% meta: description
+%!postproc: (</HEAD>)   <meta name="description" content="txt2tags - Convert plain text to HTML, XHTML, SGML, LaTeX, DocBook, Lout, Man page, Creole, Wikipedia, Google Code Wiki, DokuWiki, PmWiki, MoinMoin, MagicPoint, PageMaker, AsciiDoc and ASCII Art!">\n\1
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Start
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+                    = 6. 转意字符  =
+
+特殊的字符在shell中很重要，我们见过的如，双引号(")会影响shell对空格和TAB的解析。
+比如：
+```
+$ echo Hello      World
+Hello World
+$ echo "Hello      World"
+Hello      World
+```
+那么我们如何显示：//Hello      "World"//?
+```
+$ echo "Hello    \"World\""
+Hello     "World"
+```
+第一个和最后一个//"//用来确定整个参数的范围，这样传给//echo//后里面的空格都被完整的保留了。但是以下代码：
+```
+$ echo "Hello    "World""
+Hello     World
+```
+它被解析为一个参数,所以就输出了
+```
+Hello     World
+```
+
+很多特殊字符（如//*//,//'//等）在双引号(")中是不会被解析的，它们会仅仅被当作一个字符来对待，而不是他们的所能起的作用。
+一个使用星号(*)的例子如：
+```
+$ echo *
+bash-shell-tutorial-escape-characters.t2t bash-shell-tutorial-first-script.html bash-shell-tutorial-first-scripts.html index.t2t profile refresh.sh scripts site.css tmpl.html tmpl.t2t
+$ echo *t2t
+bash-shell-tutorial-escape-characters.t2t bash-shell-tutorial-first-scripts.t2t bash-shell-tutorial-first-script.t2t index.t2t tmpl.t2t
+$ echo "*"
+*
+$ echo "*t2t"
+*t2t
+
+```
+- 在第一个例子中，*****被扩展为当前目录下的所有文件。
+- 在第二个例子中，***.t2t**表示所有的以//t2t//结尾的文件。
+- 在第三个例子中，我们把*****放在双引号(")中间，它被直接的解析为一个字符。
+- 在第四个例子中，和第二个例子一样，但我们把它放在了双引号中间，结果也是被直接解析为一个字符//*//后面紧跟着字符串//t2t//。
+
+
+但是并不是所有特殊字符在双引号中都被直接解析为字符，//",$,`//和//\//都仍然被shell所解析为扩展意义。
+
+反斜杠//(\)//被用来标识这些特殊字符不被shell所解析，而是直接将字符作为参数传递使用（如//echo "\""//）。
+所以如果想要得到以下输出：
+```
+A quote is ", backslash is \, backtick is `.
+A few spaces are      and dollar is $. $x is 5.
+
+```
+我们要将脚本写为：
+__escape_char.sh__
+```
+#!/bin/sh
+x=5
+echo "A quote is \", backslash is \\, backtick is \`."
+echo "A few spaces are      and dollar is \$. \$x is $x."
+
+```
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% End
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%!include: footer.t2t
